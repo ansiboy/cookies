@@ -1,0 +1,13 @@
+{
+    "name": "maishu-cookies",
+    "version": "1.0.0",
+    "dependencies": {
+        "@types/node": "^12.12.21",
+        "depd": "^2.0.0",
+        "keygrip": "^1.1.0"
+    },
+    "devDependencies": {
+        "@types/depd": "^1.1.32",
+        "@types/keygrip": "^1.0.1"
+    }
+}
