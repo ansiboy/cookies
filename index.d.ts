@@ -16,7 +16,7 @@ declare class Cookies {
     private request;
     private response;
     private keys;
-    constructor(request: http.IncomingMessage, response: http.IncomingMessage, options?: Opetions | Keygrip | []);
+    constructor(request: http.IncomingMessage, response: http.IncomingMessage | http.ServerResponse, options?: Opetions | Keygrip | []);
     get(name: string, opts?: any): any;
     set(name: string, value: string, opts?: CookieOptions & {
         signed?: boolean;

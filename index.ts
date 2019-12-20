@@ -42,11 +42,10 @@ interface Opetions {
 class Cookies {
   private secure: boolean;
   private request: http.IncomingMessage;
-  private response: http.IncomingMessage;
+  private response: http.IncomingMessage | http.ServerResponse;
   private keys: Keygrip;
 
-  constructor(request: http.IncomingMessage, response: http.IncomingMessage, options?: Opetions | Keygrip | []) {
-    // if (!(this instanceof Cookies)) return new Cookies(request, response, options)
+  constructor(request: http.IncomingMessage, response: http.IncomingMessage | http.ServerResponse, options?: Opetions | Keygrip | []) {
 
     this.secure = undefined
     this.request = request
@@ -100,8 +99,10 @@ class Cookies {
 
   //{ signed?: boolean, secure?: boolean, secureProxy?: boolean, path?: string, overwrite?: boolean }
   set(name: string, value: string, opts?: CookieOptions & { signed?: boolean, secureProxy?: boolean }) {
-    let res = this.response;
-    let headers = res.headers["Set-Cookie"] || [];//res.getHeader("Set-Cookie") || [];
+    let res = this.response as http.ServerResponse;
+    let headers = res.getHeader ? res.getHeader("Set-Cookie") as string | string[] :
+      (this.response as http.IncomingMessage).headers["Set-Cookie"] || [];//res.getHeader("Set-Cookie") || [];
+
     let secure = this.secure; //this.secure !== undefined ? !!this.secure : req["protocol"] === 'https' || req.connection["encrypted"];
     let cookie = new Cookie(name, value, opts);
     let signed = opts && opts.signed !== undefined ? opts.signed : !!this.keys;
@@ -132,7 +133,11 @@ class Cookies {
 
     // var setHeader = res.set ? http.OutgoingMessage.prototype.setHeader : res.setHeader
     // setHeader.call(res, 'Set-Cookie', headers)
-    res.headers["Set-Cookie"] = headers;
+    if (res.setHeader)
+      res.setHeader("Set-Cookie", headers);
+    else
+      (this.response as http.IncomingMessage).headers["Set-Cookie"] = headers;
+
     return this
   }
 

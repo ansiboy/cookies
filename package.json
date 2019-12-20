@@ -1,6 +1,9 @@
 {
     "name": "maishu-cookies",
-    "version": "1.0.0",
+    "version": "1.1.0",
+    "scripts": {
+        "build": "tsc -p ./"
+    },
     "dependencies": {
         "@types/node": "^12.12.21",
         "depd": "^2.0.0",
