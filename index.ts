@@ -100,8 +100,8 @@ class Cookies {
   //{ signed?: boolean, secure?: boolean, secureProxy?: boolean, path?: string, overwrite?: boolean }
   set(name: string, value: string, opts?: CookieOptions & { signed?: boolean, secureProxy?: boolean }) {
     let res = this.response as http.ServerResponse;
-    let headers = res.getHeader ? res.getHeader("Set-Cookie") as string | string[] :
-      (this.response as http.IncomingMessage).headers["Set-Cookie"] || [];//res.getHeader("Set-Cookie") || [];
+    let headers = (res.getHeader ? res.getHeader("Set-Cookie") as string | string[] :
+      (this.response as http.IncomingMessage).headers["Set-Cookie"]) || [];//res.getHeader("Set-Cookie") || [];
 
     let secure = this.secure; //this.secure !== undefined ? !!this.secure : req["protocol"] === 'https' || req.connection["encrypted"];
     let cookie = new Cookie(name, value, opts);
